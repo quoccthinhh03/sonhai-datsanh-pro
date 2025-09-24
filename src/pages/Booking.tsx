@@ -7,9 +7,25 @@ import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Calendar, Clock, Phone, Mail, MapPin, CheckCircle, AlertCircle } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import { supabase } from "@/integrations/supabase/client";
+import { z } from "zod";
+
+// Validation schema
+const bookingSchema = z.object({
+  name: z.string().trim().min(1, "Vui lòng nhập họ tên").max(100, "Tên quá dài"),
+  company: z.string().trim().max(100, "Tên công ty quá dài").optional().or(z.literal("")),
+  phone: z.string().trim().min(1, "Vui lòng nhập số điện thoại").max(20, "Số điện thoại không hợp lệ"),
+  email: z.string().trim().email("Email không hợp lệ").max(255, "Email quá dài").optional().or(z.literal("")),
+  service: z.string().min(1, "Vui lòng chọn dịch vụ"),
+  date: z.string().optional().or(z.literal("")),
+  time: z.string().optional().or(z.literal("")),
+  location: z.string().trim().max(500, "Địa chỉ quá dài").optional().or(z.literal("")),
+  description: z.string().trim().max(2000, "Mô tả quá dài").optional().or(z.literal(""))
+});
 
 const Booking = () => {
   const { toast } = useToast();
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [formData, setFormData] = useState({
     name: "",
     company: "",
@@ -44,37 +60,93 @@ const Booking = () => {
     setFormData(prev => ({ ...prev, [field]: value }));
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const generateBookingCode = () => {
+    const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+    let result = 'BK';
+    for (let i = 0; i < 6; i++) {
+      result += chars.charAt(Math.floor(Math.random() * chars.length));
+    }
+    return result;
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
-    // Basic validation
-    if (!formData.name || !formData.phone || !formData.service) {
+    if (isSubmitting) return;
+    
+    try {
+      setIsSubmitting(true);
+      
+      // Validate form data
+      const validatedData = bookingSchema.parse(formData);
+      
+      // Generate booking code
+      const bookingCode = generateBookingCode();
+      
+      // Prepare data for database
+      const bookingData = {
+        booking_code: bookingCode,
+        customer_name: validatedData.name,
+        customer_phone: validatedData.phone,
+        customer_email: validatedData.email || null,
+        company_name: validatedData.company || null,
+        service_type: validatedData.service,
+        product_type: validatedData.service, // Using service as product type
+        quantity: 1, // Default quantity
+        preferred_date: validatedData.date || null,
+        customer_address: validatedData.location || null,
+        special_requirements: validatedData.description || null,
+        status: 'pending'
+      };
+      
+      // Insert into database
+      const { error } = await supabase
+        .from('bookings')
+        .insert(bookingData);
+      
+      if (error) {
+        console.error('Database error:', error);
+        throw new Error('Lỗi lưu dữ liệu');
+      }
+      
       toast({
-        title: "Thông tin chưa đầy đủ",
-        description: "Vui lòng điền đầy đủ thông tin bắt buộc.",
-        variant: "destructive"
+        title: "Đặt lịch thành công!",
+        description: `Mã đặt lịch: ${bookingCode}. Chúng tôi sẽ liên hệ với bạn trong vòng 24 giờ.`,
       });
-      return;
+
+      // Reset form
+      setFormData({
+        name: "",
+        company: "",
+        phone: "",
+        email: "",
+        service: "",
+        date: "",
+        time: "",
+        location: "",
+        description: ""
+      });
+      
+    } catch (error) {
+      console.error('Booking submission error:', error);
+      
+      if (error instanceof z.ZodError) {
+        const firstError = error.issues[0];
+        toast({
+          title: "Thông tin không hợp lệ",
+          description: firstError.message,
+          variant: "destructive"
+        });
+      } else {
+        toast({
+          title: "Có lỗi xảy ra",
+          description: "Vui lòng thử lại sau hoặc liên hệ hotline để được hỗ trợ.",
+          variant: "destructive"
+        });
+      }
+    } finally {
+      setIsSubmitting(false);
     }
-
-    // Simulate booking submission
-    toast({
-      title: "Đặt lịch thành công!",
-      description: "Chúng tôi sẽ liên hệ với bạn trong vòng 24 giờ để xác nhận lịch hẹn.",
-    });
-
-    // Reset form
-    setFormData({
-      name: "",
-      company: "",
-      phone: "",
-      email: "",
-      service: "",
-      date: "",
-      time: "",
-      location: "",
-      description: ""
-    });
   };
 
   const benefits = [
@@ -234,8 +306,14 @@ const Booking = () => {
                   />
                 </div>
 
-                <Button type="submit" variant="industrial" size="lg" className="w-full">
-                  Đặt lịch tư vấn
+                <Button 
+                  type="submit" 
+                  variant="industrial" 
+                  size="lg" 
+                  className="w-full"
+                  disabled={isSubmitting}
+                >
+                  {isSubmitting ? "Đang xử lý..." : "Đặt lịch tư vấn"}
                 </Button>
 
                 <div className="flex items-center space-x-2 text-sm text-muted-foreground">

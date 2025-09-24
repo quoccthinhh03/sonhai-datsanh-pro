@@ -16,9 +16,21 @@ import {
   Linkedin
 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import { supabase } from "@/integrations/supabase/client";
+import { z } from "zod";
+
+// Validation schema
+const contactSchema = z.object({
+  name: z.string().trim().min(1, "Vui lòng nhập họ tên").max(100, "Tên quá dài"),
+  email: z.string().trim().email("Email không hợp lệ").max(255, "Email quá dài"),
+  phone: z.string().trim().max(20, "Số điện thoại không hợp lệ").optional().or(z.literal("")),
+  subject: z.string().trim().max(200, "Tiêu đề quá dài").optional().or(z.literal("")),
+  message: z.string().trim().min(1, "Vui lòng nhập nội dung").max(2000, "Nội dung quá dài")
+});
 
 const Contact = () => {
   const { toast } = useToast();
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -31,30 +43,70 @@ const Contact = () => {
     setFormData(prev => ({ ...prev, [field]: value }));
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
-    if (!formData.name || !formData.email || !formData.message) {
+    if (isSubmitting) return;
+    
+    try {
+      setIsSubmitting(true);
+      
+      // Validate form data
+      const validatedData = contactSchema.parse(formData);
+      
+      // Prepare data for database
+      const contactData = {
+        name: validatedData.name,
+        email: validatedData.email,
+        phone: validatedData.phone || null,
+        subject: validatedData.subject || null,
+        message: validatedData.message,
+        status: 'new'
+      };
+      
+      // Insert into database
+      const { error } = await supabase
+        .from('contacts')
+        .insert(contactData);
+      
+      if (error) {
+        console.error('Database error:', error);
+        throw new Error('Lỗi lưu dữ liệu');
+      }
+      
       toast({
-        title: "Thông tin chưa đầy đủ",
-        description: "Vui lòng điền đầy đủ thông tin bắt buộc.",
-        variant: "destructive"
+        title: "Gửi thông tin thành công!",
+        description: "Chúng tôi sẽ phản hồi trong vòng 24 giờ.",
       });
-      return;
+
+      setFormData({
+        name: "",
+        email: "",
+        phone: "",
+        subject: "",
+        message: ""
+      });
+      
+    } catch (error) {
+      console.error('Contact submission error:', error);
+      
+      if (error instanceof z.ZodError) {
+        const firstError = error.issues[0];
+        toast({
+          title: "Thông tin không hợp lệ",
+          description: firstError.message,
+          variant: "destructive"
+        });
+      } else {
+        toast({
+          title: "Có lỗi xảy ra",
+          description: "Vui lòng thử lại sau hoặc liên hệ hotline để được hỗ trợ.",
+          variant: "destructive"
+        });
+      }
+    } finally {
+      setIsSubmitting(false);
     }
-
-    toast({
-      title: "Gửi thông tin thành công!",
-      description: "Chúng tôi sẽ phản hồi trong vòng 24 giờ.",
-    });
-
-    setFormData({
-      name: "",
-      email: "",
-      phone: "",
-      subject: "",
-      message: ""
-    });
   };
 
   const contactInfo = [
@@ -195,9 +247,15 @@ const Contact = () => {
                       />
                     </div>
 
-                    <Button type="submit" variant="industrial" size="lg" className="w-full">
+                    <Button 
+                      type="submit" 
+                      variant="industrial" 
+                      size="lg" 
+                      className="w-full"
+                      disabled={isSubmitting}
+                    >
                       <Send className="mr-2 h-5 w-5" />
-                      Gửi tin nhắn
+                      {isSubmitting ? "Đang gửi..." : "Gửi tin nhắn"}
                     </Button>
                   </form>
                 </CardContent>
