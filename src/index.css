@@ -2,39 +2,60 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Definition of the design system. All colors, gradients, fonts, etc should be defined here. 
-All colors MUST be HSL.
-*/
+/* Sơn Hải Thịnh Industrial Design System - Professional coating service theme */
 
 @layer base {
   :root {
+    /* Industrial Blue Theme - Professional & Trustworthy */
     --background: 0 0% 100%;
-    --foreground: 222.2 84% 4.9%;
+    --foreground: 213 31% 15%;
 
     --card: 0 0% 100%;
-    --card-foreground: 222.2 84% 4.9%;
+    --card-foreground: 213 31% 15%;
 
     --popover: 0 0% 100%;
-    --popover-foreground: 222.2 84% 4.9%;
+    --popover-foreground: 213 31% 15%;
 
-    --primary: 222.2 47.4% 11.2%;
-    --primary-foreground: 210 40% 98%;
+    /* Navy Blue Primary - Industrial Trust */
+    --primary: 213 94% 25%;
+    --primary-foreground: 0 0% 98%;
+    --primary-light: 213 94% 35%;
+    --primary-dark: 213 94% 15%;
 
-    --secondary: 210 40% 96.1%;
-    --secondary-foreground: 222.2 47.4% 11.2%;
+    /* Orange Accent - Innovation & Energy */
+    --accent: 25 95% 55%;
+    --accent-foreground: 0 0% 98%;
+    --accent-light: 25 95% 65%;
+    --accent-dark: 25 95% 45%;
 
-    --muted: 210 40% 96.1%;
-    --muted-foreground: 215.4 16.3% 46.9%;
+    /* Professional Grays */
+    --secondary: 210 20% 95%;
+    --secondary-foreground: 213 31% 15%;
 
-    --accent: 210 40% 96.1%;
-    --accent-foreground: 222.2 47.4% 11.2%;
+    --muted: 210 20% 95%;
+    --muted-foreground: 213 16% 50%;
 
     --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 40% 98%;
+    --destructive-foreground: 0 0% 98%;
 
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
-    --ring: 222.2 84% 4.9%;
+    --border: 210 20% 90%;
+    --input: 210 20% 95%;
+    --ring: 213 94% 25%;
+
+    /* Industrial Gradients */
+    --gradient-primary: linear-gradient(135deg, hsl(213 94% 25%), hsl(213 94% 35%));
+    --gradient-accent: linear-gradient(135deg, hsl(25 95% 55%), hsl(25 95% 65%));
+    --gradient-hero: linear-gradient(135deg, hsl(213 94% 15%) 0%, hsl(213 94% 25%) 50%, hsl(25 95% 55%) 100%);
+    --gradient-industrial: linear-gradient(180deg, hsl(210 20% 98%) 0%, hsl(210 20% 95%) 100%);
+
+    /* Professional Shadows */
+    --shadow-industrial: 0 4px 20px -2px hsl(213 94% 25% / 0.15);
+    --shadow-card: 0 2px 12px -2px hsl(213 31% 15% / 0.08);
+    --shadow-glow: 0 0 30px hsl(25 95% 55% / 0.3);
+
+    /* Smooth Animations */
+    --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-bounce: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
 
     --radius: 0.5rem;
 
