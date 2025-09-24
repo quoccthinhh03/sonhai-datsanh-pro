@@ -14,6 +14,60 @@ export type Database = {
   }
   public: {
     Tables: {
+      bookings: {
+        Row: {
+          booking_code: string
+          company_name: string
+          created_at: string
+          customer_address: string | null
+          customer_email: string
+          customer_name: string
+          customer_phone: string
+          id: string
+          preferred_date: string
+          product_type: string
+          quantity: number
+          service_type: string
+          special_requirements: string | null
+          status: string
+          updated_at: string
+        }
+        Insert: {
+          booking_code: string
+          company_name: string
+          created_at?: string
+          customer_address?: string | null
+          customer_email: string
+          customer_name: string
+          customer_phone: string
+          id?: string
+          preferred_date: string
+          product_type: string
+          quantity?: number
+          service_type: string
+          special_requirements?: string | null
+          status?: string
+          updated_at?: string
+        }
+        Update: {
+          booking_code?: string
+          company_name?: string
+          created_at?: string
+          customer_address?: string | null
+          customer_email?: string
+          customer_name?: string
+          customer_phone?: string
+          id?: string
+          preferred_date?: string
+          product_type?: string
+          quantity?: number
+          service_type?: string
+          special_requirements?: string | null
+          status?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       card_topup_history: {
         Row: {
           amount: number
@@ -94,6 +148,42 @@ export type Database = {
           qr_cloudinary_url?: string | null
           updated_at?: string | null
           user?: string | null
+        }
+        Relationships: []
+      }
+      contacts: {
+        Row: {
+          created_at: string
+          email: string
+          id: string
+          message: string
+          name: string
+          phone: string
+          status: string
+          subject: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          email: string
+          id?: string
+          message: string
+          name: string
+          phone: string
+          status?: string
+          subject: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          email?: string
+          id?: string
+          message?: string
+          name?: string
+          phone?: string
+          status?: string
+          subject?: string
+          updated_at?: string
         }
         Relationships: []
       }
