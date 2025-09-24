@@ -10,553 +10,346 @@ export type Database = {
   // Allows to automatically instantiate createClient with right options
   // instead of createClient<Database, { PostgrestVersion: 'XX' }>(URL, KEY)
   __InternalSupabase: {
-    PostgrestVersion: "13.0.5"
+    PostgrestVersion: "13.0.4"
   }
   public: {
     Tables: {
-      bookings: {
+      card_topup_history: {
         Row: {
-          actual_completion_date: string | null
-          actual_start_date: string | null
-          admin_notes: string | null
-          booking_code: string
-          color_code: string | null
-          color_name: string | null
-          company_name: string | null
+          amount: number
+          card_id: string
           created_at: string | null
-          customer_address: string | null
-          customer_email: string | null
-          customer_feedback: string | null
-          customer_name: string
-          customer_phone: string
-          design_files: string[] | null
-          dimensions: Json | null
-          estimated_completion_days: number | null
-          estimated_price: number | null
-          final_price: number | null
-          id: string
-          preferred_date: string | null
-          priority: string | null
-          product_images: string[] | null
-          product_type: string
-          quantity: number
-          rating: number | null
-          service_type: string
-          special_requirements: string | null
+          id: number
+          payment_method: string
           status: string | null
-          surface_area: number | null
+          transaction_id: string | null
           updated_at: string | null
         }
         Insert: {
-          actual_completion_date?: string | null
-          actual_start_date?: string | null
-          admin_notes?: string | null
-          booking_code: string
-          color_code?: string | null
-          color_name?: string | null
-          company_name?: string | null
+          amount: number
+          card_id: string
           created_at?: string | null
-          customer_address?: string | null
-          customer_email?: string | null
-          customer_feedback?: string | null
-          customer_name: string
-          customer_phone: string
-          design_files?: string[] | null
-          dimensions?: Json | null
-          estimated_completion_days?: number | null
-          estimated_price?: number | null
-          final_price?: number | null
-          id?: string
-          preferred_date?: string | null
-          priority?: string | null
-          product_images?: string[] | null
-          product_type: string
-          quantity: number
-          rating?: number | null
-          service_type: string
-          special_requirements?: string | null
+          id?: number
+          payment_method: string
           status?: string | null
-          surface_area?: number | null
+          transaction_id?: string | null
           updated_at?: string | null
         }
         Update: {
-          actual_completion_date?: string | null
-          actual_start_date?: string | null
-          admin_notes?: string | null
-          booking_code?: string
-          color_code?: string | null
-          color_name?: string | null
-          company_name?: string | null
+          amount?: number
+          card_id?: string
           created_at?: string | null
-          customer_address?: string | null
-          customer_email?: string | null
-          customer_feedback?: string | null
-          customer_name?: string
-          customer_phone?: string
-          design_files?: string[] | null
-          dimensions?: Json | null
-          estimated_completion_days?: number | null
-          estimated_price?: number | null
-          final_price?: number | null
-          id?: string
-          preferred_date?: string | null
-          priority?: string | null
-          product_images?: string[] | null
-          product_type?: string
-          quantity?: number
-          rating?: number | null
-          service_type?: string
-          special_requirements?: string | null
+          id?: number
+          payment_method?: string
           status?: string | null
-          surface_area?: number | null
-          updated_at?: string | null
-        }
-        Relationships: []
-      }
-      contacts: {
-        Row: {
-          admin_reply: string | null
-          company: string | null
-          created_at: string | null
-          email: string
-          id: string
-          message: string
-          name: string
-          phone: string | null
-          replied_at: string | null
-          status: string | null
-          subject: string | null
-        }
-        Insert: {
-          admin_reply?: string | null
-          company?: string | null
-          created_at?: string | null
-          email: string
-          id?: string
-          message: string
-          name: string
-          phone?: string | null
-          replied_at?: string | null
-          status?: string | null
-          subject?: string | null
-        }
-        Update: {
-          admin_reply?: string | null
-          company?: string | null
-          created_at?: string | null
-          email?: string
-          id?: string
-          message?: string
-          name?: string
-          phone?: string | null
-          replied_at?: string | null
-          status?: string | null
-          subject?: string | null
-        }
-        Relationships: []
-      }
-      gallery: {
-        Row: {
-          category: string | null
-          created_at: string | null
-          description: string | null
-          display_order: number | null
-          file_size: number | null
-          file_type: string | null
-          file_url: string
-          id: string
-          is_active: boolean | null
-          tags: string[] | null
-          title: string | null
-        }
-        Insert: {
-          category?: string | null
-          created_at?: string | null
-          description?: string | null
-          display_order?: number | null
-          file_size?: number | null
-          file_type?: string | null
-          file_url: string
-          id?: string
-          is_active?: boolean | null
-          tags?: string[] | null
-          title?: string | null
-        }
-        Update: {
-          category?: string | null
-          created_at?: string | null
-          description?: string | null
-          display_order?: number | null
-          file_size?: number | null
-          file_type?: string | null
-          file_url?: string
-          id?: string
-          is_active?: boolean | null
-          tags?: string[] | null
-          title?: string | null
-        }
-        Relationships: []
-      }
-      news: {
-        Row: {
-          author_id: string | null
-          category: string | null
-          content: string
-          created_at: string | null
-          excerpt: string | null
-          featured_image: string | null
-          id: string
-          is_featured: boolean | null
-          is_published: boolean | null
-          published_at: string | null
-          slug: string
-          tags: string[] | null
-          title: string
-          updated_at: string | null
-          view_count: number | null
-        }
-        Insert: {
-          author_id?: string | null
-          category?: string | null
-          content: string
-          created_at?: string | null
-          excerpt?: string | null
-          featured_image?: string | null
-          id?: string
-          is_featured?: boolean | null
-          is_published?: boolean | null
-          published_at?: string | null
-          slug: string
-          tags?: string[] | null
-          title: string
-          updated_at?: string | null
-          view_count?: number | null
-        }
-        Update: {
-          author_id?: string | null
-          category?: string | null
-          content?: string
-          created_at?: string | null
-          excerpt?: string | null
-          featured_image?: string | null
-          id?: string
-          is_featured?: boolean | null
-          is_published?: boolean | null
-          published_at?: string | null
-          slug?: string
-          tags?: string[] | null
-          title?: string
-          updated_at?: string | null
-          view_count?: number | null
-        }
-        Relationships: [
-          {
-            foreignKeyName: "news_author_id_fkey"
-            columns: ["author_id"]
-            isOneToOne: false
-            referencedRelation: "profiles"
-            referencedColumns: ["id"]
-          },
-        ]
-      }
-      pages: {
-        Row: {
-          content: string
-          created_at: string | null
-          id: string
-          is_published: boolean | null
-          meta_description: string | null
-          meta_title: string | null
-          slug: string
-          template: string | null
-          title: string
-          updated_at: string | null
-        }
-        Insert: {
-          content: string
-          created_at?: string | null
-          id?: string
-          is_published?: boolean | null
-          meta_description?: string | null
-          meta_title?: string | null
-          slug: string
-          template?: string | null
-          title: string
-          updated_at?: string | null
-        }
-        Update: {
-          content?: string
-          created_at?: string | null
-          id?: string
-          is_published?: boolean | null
-          meta_description?: string | null
-          meta_title?: string | null
-          slug?: string
-          template?: string | null
-          title?: string
-          updated_at?: string | null
-        }
-        Relationships: []
-      }
-      products: {
-        Row: {
-          category: string | null
-          created_at: string | null
-          description: string | null
-          display_order: number | null
-          id: string
-          images: string[] | null
-          is_active: boolean | null
-          name: string
-          price: number | null
-          short_description: string | null
-          slug: string
-          specifications: Json | null
-          updated_at: string | null
-        }
-        Insert: {
-          category?: string | null
-          created_at?: string | null
-          description?: string | null
-          display_order?: number | null
-          id?: string
-          images?: string[] | null
-          is_active?: boolean | null
-          name: string
-          price?: number | null
-          short_description?: string | null
-          slug: string
-          specifications?: Json | null
-          updated_at?: string | null
-        }
-        Update: {
-          category?: string | null
-          created_at?: string | null
-          description?: string | null
-          display_order?: number | null
-          id?: string
-          images?: string[] | null
-          is_active?: boolean | null
-          name?: string
-          price?: number | null
-          short_description?: string | null
-          slug?: string
-          specifications?: Json | null
-          updated_at?: string | null
-        }
-        Relationships: []
-      }
-      profiles: {
-        Row: {
-          avatar_url: string | null
-          created_at: string | null
-          full_name: string | null
-          id: string
-          phone: string | null
-          role: string | null
-          updated_at: string | null
-        }
-        Insert: {
-          avatar_url?: string | null
-          created_at?: string | null
-          full_name?: string | null
-          id: string
-          phone?: string | null
-          role?: string | null
-          updated_at?: string | null
-        }
-        Update: {
-          avatar_url?: string | null
-          created_at?: string | null
-          full_name?: string | null
-          id?: string
-          phone?: string | null
-          role?: string | null
-          updated_at?: string | null
-        }
-        Relationships: []
-      }
-      projects: {
-        Row: {
-          client_name: string | null
-          completion_date: string | null
-          created_at: string | null
-          description: string | null
-          display_order: number | null
-          id: string
-          images: string[] | null
-          is_active: boolean | null
-          is_featured: boolean | null
-          location: string | null
-          project_value: number | null
-          services_used: string[] | null
-          short_description: string | null
-          slug: string
-          title: string
-          updated_at: string | null
-        }
-        Insert: {
-          client_name?: string | null
-          completion_date?: string | null
-          created_at?: string | null
-          description?: string | null
-          display_order?: number | null
-          id?: string
-          images?: string[] | null
-          is_active?: boolean | null
-          is_featured?: boolean | null
-          location?: string | null
-          project_value?: number | null
-          services_used?: string[] | null
-          short_description?: string | null
-          slug: string
-          title: string
-          updated_at?: string | null
-        }
-        Update: {
-          client_name?: string | null
-          completion_date?: string | null
-          created_at?: string | null
-          description?: string | null
-          display_order?: number | null
-          id?: string
-          images?: string[] | null
-          is_active?: boolean | null
-          is_featured?: boolean | null
-          location?: string | null
-          project_value?: number | null
-          services_used?: string[] | null
-          short_description?: string | null
-          slug?: string
-          title?: string
-          updated_at?: string | null
-        }
-        Relationships: []
-      }
-      services: {
-        Row: {
-          created_at: string | null
-          description: string | null
-          display_order: number | null
-          id: string
-          image_url: string | null
-          is_active: boolean | null
-          name: string
-          price_from: number | null
-          price_to: number | null
-          short_description: string | null
-          slug: string
-          unit: string | null
-          updated_at: string | null
-        }
-        Insert: {
-          created_at?: string | null
-          description?: string | null
-          display_order?: number | null
-          id?: string
-          image_url?: string | null
-          is_active?: boolean | null
-          name: string
-          price_from?: number | null
-          price_to?: number | null
-          short_description?: string | null
-          slug: string
-          unit?: string | null
-          updated_at?: string | null
-        }
-        Update: {
-          created_at?: string | null
-          description?: string | null
-          display_order?: number | null
-          id?: string
-          image_url?: string | null
-          is_active?: boolean | null
-          name?: string
-          price_from?: number | null
-          price_to?: number | null
-          short_description?: string | null
-          slug?: string
-          unit?: string | null
-          updated_at?: string | null
-        }
-        Relationships: []
-      }
-      site_settings: {
-        Row: {
-          description: string | null
-          id: string
-          key: string
-          type: string | null
-          updated_at: string | null
-          value: string | null
-        }
-        Insert: {
-          description?: string | null
-          id?: string
-          key: string
-          type?: string | null
-          updated_at?: string | null
-          value?: string | null
-        }
-        Update: {
-          description?: string | null
-          id?: string
-          key?: string
-          type?: string | null
-          updated_at?: string | null
-          value?: string | null
-        }
-        Relationships: []
-      }
-      workshop_schedule: {
-        Row: {
-          booking_id: string | null
-          created_at: string | null
-          end_time: string | null
-          id: string
-          notes: string | null
-          scheduled_date: string
-          start_time: string | null
-          station_name: string | null
-          status: string | null
-          technician_name: string | null
-          updated_at: string | null
-        }
-        Insert: {
-          booking_id?: string | null
-          created_at?: string | null
-          end_time?: string | null
-          id?: string
-          notes?: string | null
-          scheduled_date: string
-          start_time?: string | null
-          station_name?: string | null
-          status?: string | null
-          technician_name?: string | null
-          updated_at?: string | null
-        }
-        Update: {
-          booking_id?: string | null
-          created_at?: string | null
-          end_time?: string | null
-          id?: string
-          notes?: string | null
-          scheduled_date?: string
-          start_time?: string | null
-          station_name?: string | null
-          status?: string | null
-          technician_name?: string | null
+          transaction_id?: string | null
           updated_at?: string | null
         }
         Relationships: [
           {
-            foreignKeyName: "workshop_schedule_booking_id_fkey"
-            columns: ["booking_id"]
+            foreignKeyName: "card_topup_history_card_id_fkey"
+            columns: ["card_id"]
             isOneToOne: false
-            referencedRelation: "bookings"
+            referencedRelation: "cards"
             referencedColumns: ["id"]
           },
         ]
+      }
+      cards: {
+        Row: {
+          balance: number
+          created_at: string | null
+          email: string | null
+          face_encoding: string | null
+          id: string
+          name: string
+          password: string | null
+          phone: string
+          qr_cloudinary_url: string | null
+          updated_at: string | null
+          user: string | null
+        }
+        Insert: {
+          balance?: number
+          created_at?: string | null
+          email?: string | null
+          face_encoding?: string | null
+          id: string
+          name: string
+          password?: string | null
+          phone: string
+          qr_cloudinary_url?: string | null
+          updated_at?: string | null
+          user?: string | null
+        }
+        Update: {
+          balance?: number
+          created_at?: string | null
+          email?: string | null
+          face_encoding?: string | null
+          id?: string
+          name?: string
+          password?: string | null
+          phone?: string
+          qr_cloudinary_url?: string | null
+          updated_at?: string | null
+          user?: string | null
+        }
+        Relationships: []
+      }
+      license_plate_recognition: {
+        Row: {
+          confidence: string | null
+          id: number
+          image_path: string
+          license_plate: string | null
+          plate_color: string | null
+          plate_type: string | null
+          recognition_time: string
+          vehicle_type: string | null
+        }
+        Insert: {
+          confidence?: string | null
+          id?: number
+          image_path: string
+          license_plate?: string | null
+          plate_color?: string | null
+          plate_type?: string | null
+          recognition_time: string
+          vehicle_type?: string | null
+        }
+        Update: {
+          confidence?: string | null
+          id?: number
+          image_path?: string
+          license_plate?: string | null
+          plate_color?: string | null
+          plate_type?: string | null
+          recognition_time?: string
+          vehicle_type?: string | null
+        }
+        Relationships: []
+      }
+      momo_transactions: {
+        Row: {
+          amount: number
+          card_id: string | null
+          created_at: string | null
+          exit_face_image_path: string | null
+          exit_plate_image_path: string | null
+          id: number
+          license_plate: string
+          order_id: string
+          status: string | null
+          transaction_type: string | null
+          vehicle_id: number | null
+        }
+        Insert: {
+          amount: number
+          card_id?: string | null
+          created_at?: string | null
+          exit_face_image_path?: string | null
+          exit_plate_image_path?: string | null
+          id?: number
+          license_plate: string
+          order_id: string
+          status?: string | null
+          transaction_type?: string | null
+          vehicle_id?: number | null
+        }
+        Update: {
+          amount?: number
+          card_id?: string | null
+          created_at?: string | null
+          exit_face_image_path?: string | null
+          exit_plate_image_path?: string | null
+          id?: number
+          license_plate?: string
+          order_id?: string
+          status?: string | null
+          transaction_type?: string | null
+          vehicle_id?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "momo_transactions_vehicle_id_fkey"
+            columns: ["vehicle_id"]
+            isOneToOne: false
+            referencedRelation: "parked_vehicles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      overnight_fee: {
+        Row: {
+          description: string | null
+          fee_amount: number
+          id: number
+          updated_at: string | null
+          vehicle_type: string | null
+        }
+        Insert: {
+          description?: string | null
+          fee_amount?: number
+          id?: number
+          updated_at?: string | null
+          vehicle_type?: string | null
+        }
+        Update: {
+          description?: string | null
+          fee_amount?: number
+          id?: number
+          updated_at?: string | null
+          vehicle_type?: string | null
+        }
+        Relationships: []
+      }
+      parked_vehicles: {
+        Row: {
+          card_id: string | null
+          entry_time: string
+          exit_face_image_path: string | null
+          exit_plate_image_path: string | null
+          exit_time: string | null
+          face_encoding: string | null
+          face_image_path: string | null
+          id: number
+          license_plate: string
+          plate_color: string | null
+          plate_image_path: string | null
+          plate_type: string | null
+          qr_code_path: string | null
+          status: string | null
+          vehicle_type: string | null
+        }
+        Insert: {
+          card_id?: string | null
+          entry_time: string
+          exit_face_image_path?: string | null
+          exit_plate_image_path?: string | null
+          exit_time?: string | null
+          face_encoding?: string | null
+          face_image_path?: string | null
+          id?: number
+          license_plate: string
+          plate_color?: string | null
+          plate_image_path?: string | null
+          plate_type?: string | null
+          qr_code_path?: string | null
+          status?: string | null
+          vehicle_type?: string | null
+        }
+        Update: {
+          card_id?: string | null
+          entry_time?: string
+          exit_face_image_path?: string | null
+          exit_plate_image_path?: string | null
+          exit_time?: string | null
+          face_encoding?: string | null
+          face_image_path?: string | null
+          id?: number
+          license_plate?: string
+          plate_color?: string | null
+          plate_image_path?: string | null
+          plate_type?: string | null
+          qr_code_path?: string | null
+          status?: string | null
+          vehicle_type?: string | null
+        }
+        Relationships: []
+      }
+      parking_space_config: {
+        Row: {
+          daily_capacity: number
+          description: string | null
+          id: number
+          max_capacity: number
+          updated_at: string | null
+        }
+        Insert: {
+          daily_capacity?: number
+          description?: string | null
+          id?: number
+          max_capacity?: number
+          updated_at?: string | null
+        }
+        Update: {
+          daily_capacity?: number
+          description?: string | null
+          id?: number
+          max_capacity?: number
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
+      pricing_config: {
+        Row: {
+          created_at: string | null
+          description: string | null
+          end_hour: number
+          end_minute: number | null
+          id: number
+          price: number
+          start_hour: number
+          start_minute: number | null
+          time_slot_name: string
+          updated_at: string | null
+          vehicle_type: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          description?: string | null
+          end_hour: number
+          end_minute?: number | null
+          id?: number
+          price: number
+          start_hour: number
+          start_minute?: number | null
+          time_slot_name: string
+          updated_at?: string | null
+          vehicle_type?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          description?: string | null
+          end_hour?: number
+          end_minute?: number | null
+          id?: number
+          price?: number
+          start_hour?: number
+          start_minute?: number | null
+          time_slot_name?: string
+          updated_at?: string | null
+          vehicle_type?: string | null
+        }
+        Relationships: []
+      }
+      transactions: {
+        Row: {
+          amount: number
+          card_id: string
+          created_at: string | null
+          id: string
+          status: string | null
+          transaction_id: string | null
+        }
+        Insert: {
+          amount: number
+          card_id: string
+          created_at?: string | null
+          id?: string
+          status?: string | null
+          transaction_id?: string | null
+        }
+        Update: {
+          amount?: number
+          card_id?: string
+          created_at?: string | null
+          id?: string
+          status?: string | null
+          transaction_id?: string | null
+        }
+        Relationships: []
       }
     }
     Views: {
