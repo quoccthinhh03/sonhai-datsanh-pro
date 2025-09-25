@@ -14,7 +14,96 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      bookings: {
+        Row: {
+          booking_code: string
+          company_name: string | null
+          created_at: string
+          customer_address: string | null
+          customer_email: string
+          customer_name: string
+          customer_phone: string
+          id: string
+          preferred_date: string | null
+          product_type: string | null
+          quantity: number | null
+          service_type: string
+          special_requirements: string | null
+          status: string | null
+          updated_at: string
+        }
+        Insert: {
+          booking_code: string
+          company_name?: string | null
+          created_at?: string
+          customer_address?: string | null
+          customer_email: string
+          customer_name: string
+          customer_phone: string
+          id?: string
+          preferred_date?: string | null
+          product_type?: string | null
+          quantity?: number | null
+          service_type: string
+          special_requirements?: string | null
+          status?: string | null
+          updated_at?: string
+        }
+        Update: {
+          booking_code?: string
+          company_name?: string | null
+          created_at?: string
+          customer_address?: string | null
+          customer_email?: string
+          customer_name?: string
+          customer_phone?: string
+          id?: string
+          preferred_date?: string | null
+          product_type?: string | null
+          quantity?: number | null
+          service_type?: string
+          special_requirements?: string | null
+          status?: string | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      contacts: {
+        Row: {
+          created_at: string
+          email: string
+          id: string
+          message: string
+          name: string
+          phone: string | null
+          status: string | null
+          subject: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          email: string
+          id?: string
+          message: string
+          name: string
+          phone?: string | null
+          status?: string | null
+          subject: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          email?: string
+          id?: string
+          message?: string
+          name?: string
+          phone?: string | null
+          status?: string | null
+          subject?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
