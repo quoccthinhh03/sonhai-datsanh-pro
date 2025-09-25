@@ -199,20 +199,22 @@ const Home = () => {
         <div className="container mx-auto px-4 text-center">
           <div className="max-w-3xl mx-auto text-primary-foreground">
             <h2 className="text-4xl md:text-5xl font-bold mb-6">
-              Sẵn sàng bắt đầu dự án của bạn?
+              Bắt đầu dự án <span className="text-accent">sơn tĩnh điện</span> của bạn
             </h2>
             <p className="text-xl opacity-90 mb-8">
-              Liên hệ với chúng tôi ngay hôm nay để nhận tư vấn miễn phí 
-              và báo giá tốt nhất cho dự án sơn tĩnh điện của bạn.
+              Đăng ký tài khoản để đặt lịch tư vấn và theo dõi dự án của bạn.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Button variant="outline" size="lg" className="text-lg px-8 py-4 border-white text-white hover:bg-white hover:text-primary">
-                <Link to="/contact">Liên hệ tư vấn</Link>
+                <Link to="/auth">Đăng ký ngay</Link>
               </Button>
               <Button variant="hero" size="lg" className="text-lg px-8 py-4 bg-accent hover:bg-accent-dark">
-                <Link to="/booking">Đặt lịch ngay</Link>
+                <Link to="/about">Tìm hiểu thêm</Link>
               </Button>
             </div>
+            <p className="mt-6 text-sm opacity-75">
+              Đăng ký miễn phí - Bắt đầu trong 30 giây
+            </p>
           </div>
         </div>
       </section>

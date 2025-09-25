@@ -31,6 +31,7 @@ export type Database = {
           special_requirements: string | null
           status: string | null
           updated_at: string
+          user_id: string | null
         }
         Insert: {
           booking_code: string
@@ -48,6 +49,7 @@ export type Database = {
           special_requirements?: string | null
           status?: string | null
           updated_at?: string
+          user_id?: string | null
         }
         Update: {
           booking_code?: string
@@ -65,6 +67,7 @@ export type Database = {
           special_requirements?: string | null
           status?: string | null
           updated_at?: string
+          user_id?: string | null
         }
         Relationships: []
       }
@@ -79,6 +82,7 @@ export type Database = {
           status: string | null
           subject: string
           updated_at: string
+          user_id: string | null
         }
         Insert: {
           created_at?: string
@@ -90,6 +94,7 @@ export type Database = {
           status?: string | null
           subject: string
           updated_at?: string
+          user_id?: string | null
         }
         Update: {
           created_at?: string
@@ -101,6 +106,34 @@ export type Database = {
           status?: string | null
           subject?: string
           updated_at?: string
+          user_id?: string | null
+        }
+        Relationships: []
+      }
+      profiles: {
+        Row: {
+          created_at: string
+          display_name: string | null
+          id: string
+          phone: string | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          display_name?: string | null
+          id?: string
+          phone?: string | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          display_name?: string | null
+          id?: string
+          phone?: string | null
+          updated_at?: string
+          user_id?: string
         }
         Relationships: []
       }

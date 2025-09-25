@@ -16,6 +16,7 @@ import {
   Linkedin
 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import { useAuth } from "@/hooks/useAuth";
 import { supabase } from "@/integrations/supabase/client";
 import { z } from "zod";
 
@@ -30,6 +31,7 @@ const contactSchema = z.object({
 
 const Contact = () => {
   const { toast } = useToast();
+  const { user } = useAuth();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [formData, setFormData] = useState({
     name: "",
@@ -61,7 +63,8 @@ const Contact = () => {
         phone: validatedData.phone || null,
         subject: validatedData.subject || null,
         message: validatedData.message,
-        status: 'new'
+        status: 'new',
+        user_id: user?.id
       };
       
       // Insert into database

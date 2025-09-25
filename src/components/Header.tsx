@@ -1,11 +1,27 @@
 import { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { Menu, X, Phone, Mail } from "lucide-react";
+import { Menu, X, Phone, Mail, User, LogOut } from "lucide-react";
+import { useAuth } from "@/hooks/useAuth";
+import { useToast } from "@/hooks/use-toast";
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const location = useLocation();
+  const { user, signOut } = useAuth();
+  const { toast } = useToast();
+
+  const handleLogout = async () => {
+    try {
+      await signOut();
+      toast({
+        title: "Đăng xuất thành công",
+        description: "Hẹn gặp lại bạn lần sau"
+      });
+    } catch (error) {
+      console.error('Error signing out:', error);
+    }
+  };
 
   const navigation = [
     { name: "Trang chủ", href: "/" },
@@ -71,11 +87,39 @@ const Header = () => {
             ))}
           </nav>
 
-          {/* CTA & Mobile menu button */}
-          <div className="flex items-center space-x-4">
-            <Button variant="industrial" size="sm" className="hidden md:inline-flex">
-              <Link to="/booking">Đặt lịch ngay</Link>
-            </Button>
+          {/* CTA & Auth buttons & Mobile menu button */}
+          <div className="flex items-center space-x-2">
+            {user ? (
+              <>
+                <Button variant="outline" size="sm" className="hidden md:inline-flex">
+                  <Link to="/dashboard" className="flex items-center">
+                    <User className="mr-2 h-4 w-4" />
+                    Tài khoản
+                  </Link>
+                </Button>
+                <Button 
+                  variant="ghost" 
+                  size="sm" 
+                  className="hidden md:inline-flex" 
+                  onClick={handleLogout}
+                >
+                  <LogOut className="mr-2 h-4 w-4" />
+                  Đăng xuất
+                </Button>
+                <Button variant="industrial" size="sm" className="hidden sm:inline-flex">
+                  <Link to="/booking">Đặt lịch ngay</Link>
+                </Button>
+              </>
+            ) : (
+              <>
+                <Button variant="outline" size="sm" className="hidden md:inline-flex">
+                  <Link to="/auth">Đăng nhập</Link>
+                </Button>
+                <Button variant="ghost" size="sm" className="hidden md:inline-flex text-muted-foreground">
+                  Đăng nhập để đặt lịch
+                </Button>
+              </>
+            )}
             
             <button
               className="lg:hidden p-2 rounded-md hover:bg-secondary"
@@ -104,10 +148,36 @@ const Header = () => {
                   {item.name}
                 </Link>
               ))}
-              <div className="pt-4">
-                <Button variant="industrial" size="sm" className="w-full">
-                  <Link to="/booking">Đặt lịch ngay</Link>
-                </Button>
+              <div className="pt-4 space-y-2">
+                {user ? (
+                  <>
+                    <Button variant="outline" size="sm" className="w-full">
+                      <Link to="/dashboard" className="flex items-center w-full">
+                        <User className="mr-2 h-4 w-4" />
+                        Tài khoản
+                      </Link>
+                    </Button>
+                    <Button variant="industrial" size="sm" className="w-full">
+                      <Link to="/booking" className="w-full">Đặt lịch ngay</Link>
+                    </Button>
+                    <Button 
+                      variant="ghost" 
+                      size="sm" 
+                      className="w-full" 
+                      onClick={() => {
+                        handleLogout();
+                        setIsMenuOpen(false);
+                      }}
+                    >
+                      <LogOut className="mr-2 h-4 w-4" />
+                      Đăng xuất
+                    </Button>
+                  </>
+                ) : (
+                  <Button variant="outline" size="sm" className="w-full">
+                    <Link to="/auth" className="w-full">Đăng nhập</Link>
+                  </Button>
+                )}
               </div>
             </nav>
           </div>

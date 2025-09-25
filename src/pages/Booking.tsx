@@ -7,6 +7,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Calendar, Clock, Phone, Mail, MapPin, CheckCircle, AlertCircle } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import { useAuth } from "@/hooks/useAuth";
 import { supabase } from "@/integrations/supabase/client";
 import { z } from "zod";
 
@@ -25,6 +26,7 @@ const bookingSchema = z.object({
 
 const Booking = () => {
   const { toast } = useToast();
+  const { user } = useAuth();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [formData, setFormData] = useState({
     name: "",
@@ -96,7 +98,8 @@ const Booking = () => {
         preferred_date: validatedData.date || null,
         customer_address: validatedData.location || null,
         special_requirements: validatedData.description || null,
-        status: 'pending'
+        status: 'pending',
+        user_id: user?.id
       };
       
       // Insert into database
