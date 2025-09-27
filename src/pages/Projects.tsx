@@ -1,133 +1,90 @@
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
-import { Link } from "react-router-dom";
+import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import { supabase } from '@/integrations/supabase/client';
 import { 
-  MapPin, 
-  Calendar, 
-  Users, 
-  Award,
+  Building2, 
+  Factory, 
+  Ship, 
+  Home, 
+  Wrench,
+  Calendar,
+  MapPin,
+  Clock,
+  CheckCircle,
   ArrowRight,
-  Building,
-  Factory,
-  Truck
-} from "lucide-react";
-import heroImage from "@/assets/hero-coating-facility.jpg";
-import coatingProcess from "@/assets/coating-process.jpg";
-import teamExpertise from "@/assets/team-expertise.jpg";
+  Users,
+  Award,
+  TrendingUp,
+  Eye
+} from 'lucide-react';
+
+interface Project {
+  id: string;
+  title: string;
+  description: string;
+  content: string;
+  category: string;
+  image_url?: string;
+  tags: string[];
+  client_name?: string;
+  completion_date?: string;
+  project_duration?: string;
+  technologies: string[];
+  results: string[];
+  featured: boolean;
+  created_at: string;
+}
 
 const Projects = () => {
-  const projectCategories = [
-    "Tất cả",
-    "Ô tô & Xe máy", 
-    "Điện tử & Điện lạnh",
-    "Nội thất & Trang trí",
-    "Công nghiệp nặng",
-    "Thiết bị y tế"
-  ];
+  const navigate = useNavigate();
+  const [selectedCategory, setSelectedCategory] = React.useState('all');
+  const [projects, setProjects] = useState<Project[]>([]);
+  const [loading, setLoading] = useState(true);
 
-  const featuredProjects = [
-    {
-      title: "Dây chuyền sơn tĩnh điện Honda Việt Nam",
-      category: "Ô tô & Xe máy",
-      client: "Honda Việt Nam Co., Ltd",
-      location: "Hưng Yên",
-      duration: "6 tháng",
-      year: "2024",
-      image: heroImage,
-      description: "Thiết kế và lắp đặt hệ thống sơn tĩnh điện tự động hoàn toàn cho linh kiện xe máy Honda với công suất 10.000 sản phẩm/ngày.",
-      results: [
-        "Tăng 40% năng suất sản xuất",
-        "Giảm 35% chi phí sơn",
-        "Nâng cao chất lượng sản phẩm",
-        "Đạt tiêu chuẩn ISO 14001"
-      ],
-      tags: ["Tự động hóa", "Quy mô lớn", "Tiết kiệm năng lượng"]
-    },
-    {
-      title: "Hệ thống sơn linh kiện điện tử Samsung",
-      category: "Điện tử & Điện lạnh", 
-      client: "Samsung Electronics Vietnam",
-      location: "Bắc Ninh",
-      duration: "4 tháng",
-      year: "2023",
-      image: coatingProcess,
-      description: "Triển khai giải pháp sơn tĩnh điện cho vỏ tivi và thiết bị điện tử với yêu cầu chất lượng cao và màu sắc đa dạng.",
-      results: [
-        "15 màu sắc chuẩn quốc tế",
-        "Độ bám dính 98%",
-        "Không có khiếm khuyết sơn",
-        "Tiết kiệm 30% nguyên liệu"
-      ],
-      tags: ["Chất lượng cao", "Đa màu sắc", "Không khiếm khuyết"]
-    },
-    {
-      title: "Nâng cấp hệ thống sơn Thành Công Group",
-      category: "Ô tô & Xe máy",
-      client: "Thành Công Group",
-      location: "Quảng Nam", 
-      duration: "3 tháng",
-      year: "2023",
-      image: teamExpertise,
-      description: "Nâng cấp dây chuyền sơn xe tải từ hệ thống cũ sang công nghệ sơn tĩnh điện hiện đại với robot tự động.",
-      results: [
-        "Giảm 50% thời gian sơn",
-        "Tăng độ bền màng sơn 3 lần",
-        "Giảm 60% lãng phí sơn",
-        "Cải thiện môi trường làm việc"
-      ],
-      tags: ["Nâng cấp", "Robot tự động", "Thân thiện môi trường"]
-    }
-  ];
+  useEffect(() => {
+    const fetchProjects = async () => {
+      try {
+        const { data, error } = await supabase
+          .from('projects')
+          .select('*')
+          .order('featured', { ascending: false })
+          .order('created_at', { ascending: false });
 
-  const allProjects = [
-    {
-      title: "Sơn khung xe đạp Giant",
-      client: "Giant Manufacturing",
-      category: "Ô tô & Xe máy",
-      year: "2024",
-      image: coatingProcess
-    },
-    {
-      title: "Dây chuyền sơn tủ lạnh Electrolux",
-      client: "Electrolux Vietnam",
-      category: "Điện tử & Điện lạnh",
-      year: "2023",
-      image: heroImage
-    },
-    {
-      title: "Hệ thống sơn nội thất cao cấp",
-      client: "Nha Trang Furniture",
-      category: "Nội thất & Trang trí",
-      year: "2023",
-      image: teamExpertise
-    },
-    {
-      title: "Sơn kết cấu thép nhà máy",
-      client: "Hoa Sen Group",
-      category: "Công nghiệp nặng", 
-      year: "2024",
-      image: coatingProcess
-    },
-    {
-      title: "Thiết bị y tế Meditech",
-      client: "Meditech Vietnam",
-      category: "Thiết bị y tế",
-      year: "2022",
-      image: heroImage
-    },
-    {
-      title: "Linh kiện máy lạnh Daikin",
-      client: "Daikin Vietnam",
-      category: "Điện tử & Điện lạnh",
-      year: "2023",
-      image: teamExpertise
-    }
-  ];
+        if (error) throw error;
+        setProjects(data || []);
+      } catch (error) {
+        console.error('Error fetching projects:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchProjects();
+  }, []);
+
+  const filteredProjects = selectedCategory === 'all' 
+    ? projects 
+    : projects.filter(project => project.category === selectedCategory);
+
+  const featuredProjects = projects.filter(project => project.featured);
+
+  const projectCategories = ['all', 'industrial', 'infrastructure', 'commercial', 'marine', 'residential'];
+  const categoryNames = ['Tất cả', 'Công nghiệp', 'Hạ tầng', 'Thương mại', 'Hàng hải', 'Dân dụng'];
+  
+  const categoryLabels: Record<string, string> = {
+    'industrial': 'Công nghiệp',
+    'infrastructure': 'Hạ tầng', 
+    'commercial': 'Thương mại',
+    'marine': 'Hàng hải',
+    'residential': 'Dân dụng'
+  };
 
   const stats = [
     { icon: Award, number: "500+", label: "Dự án hoàn thành" },
-    { icon: Building, number: "200+", label: "Khách hàng doanh nghiệp" },
+    { icon: Building2, number: "200+", label: "Khách hàng doanh nghiệp" },
     { icon: Users, number: "50+", label: "Đối tác quốc tế" },
     { icon: Factory, number: "15+", label: "Năm kinh nghiệm" }
   ];
@@ -177,67 +134,94 @@ const Projects = () => {
             </p>
           </div>
           
-          <div className="space-y-20">
-            {featuredProjects.map((project, index) => (
-              <div key={index} className={`grid lg:grid-cols-2 gap-16 items-center ${index % 2 === 1 ? 'lg:grid-flow-col-dense' : ''}`}>
-                <div className={index % 2 === 1 ? 'lg:col-start-2' : ''}>
-                  <div className="flex flex-wrap gap-2 mb-4">
-                    {project.tags.map((tag, idx) => (
-                      <Badge key={idx} variant="outline">{tag}</Badge>
-                    ))}
-                  </div>
-                  
-                  <h3 className="text-3xl font-bold text-primary mb-4">{project.title}</h3>
-                  
-                  <div className="grid grid-cols-2 gap-4 mb-6 text-sm">
-                    <div className="flex items-center space-x-2">
-                      <Building className="h-4 w-4 text-accent" />
-                      <span>{project.client}</span>
-                    </div>
-                    <div className="flex items-center space-x-2">
-                      <MapPin className="h-4 w-4 text-accent" />
-                      <span>{project.location}</span>
-                    </div>
-                    <div className="flex items-center space-x-2">
-                      <Calendar className="h-4 w-4 text-accent" />
-                      <span>{project.duration} - {project.year}</span>
-                    </div>
-                    <div className="flex items-center space-x-2">
-                      <Factory className="h-4 w-4 text-accent" />
-                      <span>{project.category}</span>
-                    </div>
-                  </div>
-                  
-                  <p className="text-lg text-muted-foreground mb-6 leading-relaxed">
-                    {project.description}
-                  </p>
-
-                  <div className="mb-8">
-                    <h4 className="font-semibold text-primary mb-4">Kết quả đạt được:</h4>
-                    <ul className="space-y-2">
-                      {project.results.map((result, idx) => (
-                        <li key={idx} className="flex items-center space-x-3">
-                          <div className="w-2 h-2 bg-accent rounded-full"></div>
-                          <span>{result}</span>
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-
-                  <Button variant="industrial" size="lg">
-                    <Link to="/contact">Tìm hiểu thêm</Link>
-                  </Button>
-                </div>
-                
-                <div className={index % 2 === 1 ? 'lg:col-start-1' : ''}>
-                  <img 
-                    src={project.image} 
-                    alt={project.title}
-                    className="rounded-xl shadow-industrial w-full"
-                  />
-                </div>
+          <div className="grid gap-8 lg:gap-12">
+            {loading ? (
+              <div className="text-center py-12">
+                <div className="w-8 h-8 border-4 border-primary border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
+                <p className="text-muted-foreground">Đang tải dự án...</p>
               </div>
-            ))}
+            ) : featuredProjects.length === 0 ? (
+              <div className="text-center py-12">
+                <p className="text-muted-foreground">Chưa có dự án nổi bật.</p>
+              </div>
+            ) : (
+              featuredProjects.map((project) => (
+                <div key={project.id} className="grid lg:grid-cols-2 gap-8 items-center">
+                  <div className="space-y-6">
+                    <div>
+                      <Badge variant="secondary" className="mb-4">
+                        {categoryLabels[project.category] || project.category}
+                      </Badge>
+                      <h3 className="text-2xl font-bold mb-4">{project.title}</h3>
+                      <p className="text-muted-foreground text-lg leading-relaxed">
+                        {project.description}
+                      </p>
+                    </div>
+                    
+                    <div className="flex flex-wrap gap-2">
+                      {project.tags.map((tag, tagIndex) => (
+                        <Badge key={tagIndex} variant="outline" className="text-sm">
+                          {tag}
+                        </Badge>
+                      ))}
+                    </div>
+
+                    <div className="grid grid-cols-2 gap-4 text-sm">
+                      {project.client_name && (
+                        <div className="flex items-center space-x-2">
+                          <Building2 className="w-4 h-4 text-primary" />
+                          <span className="text-muted-foreground">Khách hàng:</span>
+                          <span className="font-medium">{project.client_name}</span>
+                        </div>
+                      )}
+                      {project.project_duration && (
+                        <div className="flex items-center space-x-2">
+                          <Clock className="w-4 h-4 text-primary" />
+                          <span className="text-muted-foreground">Thời gian:</span>
+                          <span className="font-medium">{project.project_duration}</span>
+                        </div>
+                      )}
+                    </div>
+
+                    {project.results && project.results.length > 0 && (
+                      <div className="space-y-2">
+                        <h4 className="font-semibold text-sm">Kết quả đạt được:</h4>
+                        <ul className="space-y-1">
+                          {project.results.slice(0, 3).map((result, resultIndex) => (
+                            <li key={resultIndex} className="flex items-start text-sm">
+                              <CheckCircle className="w-4 h-4 text-primary mr-2 mt-0.5 flex-shrink-0" />
+                              <span className="text-muted-foreground">{result}</span>
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    )}
+
+                    <Button 
+                      onClick={() => navigate(`/projects/${project.id}`)}
+                      className="group"
+                    >
+                      Xem chi tiết
+                      <Eye className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" />
+                    </Button>
+                  </div>
+                  
+                  <div className="relative">
+                    {project.image_url ? (
+                      <img 
+                        src={project.image_url} 
+                        alt={project.title}
+                        className="w-full h-80 object-cover rounded-xl shadow-card hover:shadow-card-hover transition-all duration-300"
+                      />
+                    ) : (
+                      <div className="w-full h-80 bg-muted rounded-xl flex items-center justify-center">
+                        <Factory className="w-16 h-16 text-muted-foreground" />
+                      </div>
+                    )}
+                  </div>
+                </div>
+              ))
+            )}
           </div>
         </div>
       </section>
@@ -252,63 +236,96 @@ const Projects = () => {
             </p>
           </div>
           
-          {/* Category Filter - Static for demo */}
+          {/* Category Filter */}
           <div className="flex flex-wrap justify-center gap-2 mb-12">
             {projectCategories.map((category, index) => (
               <Button 
-                key={index} 
-                variant={index === 0 ? "industrial" : "outline"} 
+                key={category} 
+                variant={selectedCategory === category ? "default" : "outline"} 
                 size="sm"
+                onClick={() => setSelectedCategory(category)}
               >
-                {category}
+                {categoryNames[index]}
               </Button>
             ))}
           </div>
           
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {allProjects.map((project, index) => (
-              <Card key={index} className="group hover:shadow-industrial transition-all duration-300 hover:-translate-y-2">
-                <div className="relative">
-                  <img 
-                    src={project.image} 
-                    alt={project.title}
-                    className="w-full h-48 object-cover rounded-t-lg"
-                  />
-                  <Badge className="absolute top-4 right-4 bg-accent">
-                    {project.year}
-                  </Badge>
-                </div>
-                
-                <CardHeader>
-                  <CardTitle className="text-lg text-primary group-hover:text-accent transition-colors">
-                    {project.title}
-                  </CardTitle>
-                  <CardDescription>
-                    <div className="flex items-center space-x-2 text-sm">
-                      <Building className="h-4 w-4 text-accent" />
-                      <span>{project.client}</span>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {loading ? (
+              <div className="col-span-full text-center py-12">
+                <div className="w-8 h-8 border-4 border-primary border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
+                <p className="text-muted-foreground">Đang tải dự án...</p>
+              </div>
+            ) : filteredProjects.length === 0 ? (
+              <div className="col-span-full text-center py-12">
+                <p className="text-muted-foreground">Không tìm thấy dự án nào trong danh mục này.</p>
+              </div>
+            ) : (
+              filteredProjects.map((project) => (
+                <Card key={project.id} className="group hover:shadow-card-hover transition-all duration-300 cursor-pointer" onClick={() => navigate(`/projects/${project.id}`)}>
+                  <div className="relative">
+                    {project.image_url ? (
+                      <img 
+                        src={project.image_url} 
+                        alt={project.title}
+                        className="w-full h-48 object-cover rounded-t-lg group-hover:scale-105 transition-transform duration-300"
+                      />
+                    ) : (
+                      <div className="w-full h-48 bg-muted rounded-t-lg flex items-center justify-center">
+                        <Factory className="w-12 h-12 text-muted-foreground" />
+                      </div>
+                    )}
+                    <Badge 
+                      variant="secondary" 
+                      className="absolute top-3 left-3 bg-background/80 backdrop-blur-sm"
+                    >
+                      {categoryLabels[project.category] || project.category}
+                    </Badge>
+                    {project.featured && (
+                      <Badge className="absolute top-3 right-3 bg-primary text-primary-foreground">
+                        Nổi bật
+                      </Badge>
+                    )}
+                  </div>
+                  <CardContent className="p-6">
+                    <h3 className="font-bold text-lg mb-2 group-hover:text-primary transition-colors line-clamp-2">
+                      {project.title}
+                    </h3>
+                    <p className="text-muted-foreground text-sm mb-4 line-clamp-3">
+                      {project.description}
+                    </p>
+                    
+                    <div className="flex flex-wrap gap-1 mb-4">
+                      {project.tags.slice(0, 3).map((tag, tagIndex) => (
+                        <Badge key={tagIndex} variant="outline" className="text-xs">
+                          {tag}
+                        </Badge>
+                      ))}
+                      {project.tags.length > 3 && (
+                        <Badge variant="outline" className="text-xs">
+                          +{project.tags.length - 3}
+                        </Badge>
+                      )}
                     </div>
-                    <div className="flex items-center space-x-2 text-sm mt-1">
-                      <Factory className="h-4 w-4 text-accent" />
-                      <span>{project.category}</span>
+
+                    <div className="flex items-center justify-between">
+                      <div className="text-xs text-muted-foreground">
+                        {project.client_name || 'Dự án công ty'}
+                      </div>
+                      <Button variant="ghost" size="sm" className="group-hover:text-primary">
+                        <Eye className="w-4 h-4" />
+                      </Button>
                     </div>
-                  </CardDescription>
-                </CardHeader>
-                
-                <CardContent>
-                  <Button variant="outline" className="w-full group-hover:border-accent group-hover:text-accent">
-                    Xem chi tiết
-                    <ArrowRight className="ml-2 h-4 w-4" />
-                  </Button>
-                </CardContent>
-              </Card>
-            ))}
+                  </CardContent>
+                </Card>
+              ))
+            )}
           </div>
         </div>
       </section>
 
       {/* CTA Section */}
-      <section className="py-20 bg-gradient-hero">
+      <section className="py-20 bg-gradient-to-r from-primary to-primary/80">
         <div className="container mx-auto px-4 text-center">
           <div className="max-w-3xl mx-auto text-primary-foreground">
             <h2 className="text-4xl font-bold mb-6">
@@ -319,11 +336,20 @@ const Projects = () => {
               đồng hành cùng bạn trong dự án sơn tĩnh điện tiếp theo.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Button variant="outline" size="lg" className="border-white text-white hover:bg-white hover:text-primary">
-                <Link to="/contact">Thảo luận dự án</Link>
+              <Button 
+                variant="outline" 
+                size="lg" 
+                className="border-white text-white hover:bg-white hover:text-primary"
+                onClick={() => navigate('/contact')}
+              >
+                Thảo luận dự án
               </Button>
-              <Button variant="hero" size="lg" className="bg-accent hover:bg-accent-dark">
-                <Link to="/booking">Đặt lịch tư vấn</Link>
+              <Button 
+                variant="secondary" 
+                size="lg"
+                onClick={() => navigate('/booking')}
+              >
+                Đặt lịch tư vấn
               </Button>
             </div>
           </div>

@@ -17,6 +17,8 @@ import Contact from "./pages/Contact";
 import Booking from "./pages/Booking";
 import Auth from "./pages/Auth";
 import Dashboard from "./pages/Dashboard";
+import AdminDashboard from "./pages/AdminDashboard";
+import ProjectDetail from "./pages/ProjectDetail";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -39,11 +41,17 @@ const App = () => (
                 <Route path="/projects" element={<Projects />} />
                 <Route path="/news" element={<News />} />
                 <Route path="/auth" element={<Auth />} />
-                <Route path="/dashboard" element={
-                  <ProtectedRoute>
-                    <Dashboard />
-                  </ProtectedRoute>
-                } />
+            <Route path="/dashboard" element={
+              <ProtectedRoute>
+                <Dashboard />
+              </ProtectedRoute>
+            } />
+            <Route path="/admin" element={
+              <ProtectedRoute>
+                <AdminDashboard />
+              </ProtectedRoute>
+            } />
+            <Route path="/projects/:id" element={<ProjectDetail />} />
                 <Route path="/contact" element={
                   <ProtectedRoute>
                     <Contact />

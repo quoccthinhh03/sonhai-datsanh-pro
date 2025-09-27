@@ -3,12 +3,14 @@ import { Link, useLocation } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Menu, X, Phone, Mail, User, LogOut } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
+import { useRole } from "@/hooks/useRole";
 import { useToast } from "@/hooks/use-toast";
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const location = useLocation();
   const { user, signOut } = useAuth();
+  const { isAdmin } = useRole();
   const { toast } = useToast();
 
   const handleLogout = async () => {
@@ -94,9 +96,16 @@ const Header = () => {
                 <Button variant="outline" size="sm" className="hidden md:inline-flex">
                   <Link to="/dashboard" className="flex items-center">
                     <User className="mr-2 h-4 w-4" />
-                    Tài khoản
+                    Dashboard
                   </Link>
                 </Button>
+                {isAdmin && (
+                  <Button variant="outline" size="sm" className="hidden md:inline-flex">
+                    <Link to="/admin" className="flex items-center">
+                      Quản trị
+                    </Link>
+                  </Button>
+                )}
                 <Button 
                   variant="ghost" 
                   size="sm" 
@@ -154,9 +163,16 @@ const Header = () => {
                     <Button variant="outline" size="sm" className="w-full">
                       <Link to="/dashboard" className="flex items-center w-full">
                         <User className="mr-2 h-4 w-4" />
-                        Tài khoản
+                        Dashboard
                       </Link>
                     </Button>
+                    {isAdmin && (
+                      <Button variant="outline" size="sm" className="w-full">
+                        <Link to="/admin" className="flex items-center w-full">
+                          Quản trị
+                        </Link>
+                      </Button>
+                    )}
                     <Button variant="industrial" size="sm" className="w-full">
                       <Link to="/booking" className="w-full">Đặt lịch ngay</Link>
                     </Button>
